@@ -1,0 +1,40 @@
+KAFKA
+
+Create Topic:
+bin/kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test
+
+List Topics:
+bin/kafka-topics.sh —list --zookeeper localhost:2181
+
+Send a Message:
+bin/kafka-console-producer.sh  —list —broker-list localhost:9092 —topic test
+
+Start a Consumer:
+bin/kafka-console-consumer.sh  —list —bootstrap-server localhost:9092 —topic test —from-beginning
+
+Start a Consumer:
+bin/kafka-console-consumer.sh  —list —bootstrap-server localhost:9092 —topic test —from-beginning
+
+
+#List Topics
+./kafka-topics.sh --zookeeper zookeeper0-0.ambari0.us-east-1.dev.ccp.arity.com:2181,zookeeper0-1.ambari0.us-east-1.dev.ccp.arity.com:2181,zookeeper0-2.ambari0.us-east-1.dev.ccp.arity.com:2181 --list
+#List 1st 10 messages from a topic
+./kafka-console-consumer.sh --zookeeper zookeeper0-0.ambari0.us-east-1.dev.ccp.arity.com:2181,zookeeper0-1.ambari0.us-east-1.dev.ccp.arity.com:2181,zookeeper0-2.ambari0.us-east-1.dev.ccp.arity.com:2181 --topic V1_DrivingScoreInput --from-beginning --max-messages 10
+#getCount of Messages in a topic
+./kafka-run-class.sh kafka.tools.GetOffsetShell --broker-list kafka0-0.ambari0.us-east-1.dev.ccp.arity.com:6667,kafka0-1.ambari0.us-east-1.dev.ccp.arity.com:6667,kafka0-2.ambari0.us-east-1.dev.ccp.arity.com:6667 --topic EventIn_sdkTripSummarie. s --time -1
+
+
+!/bin/bash
+
+##############################
+# Create the topics
+##############################
+
+TOPICS=`cat /home/ec2-user/work/topics.txt`
+for TOPIC in $TOPICS; do
+
+   /usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper zookeeper0-2.ambari0.us-east-1.ccp.dev.arity.com:2181,zookeeper0-0.ambari0.us-east-1.ccp.dev.arity.com:2181,zookeeper0-1.ambari0.us-east-1.ccp.dev.arity.com:2181 --delete --topic "$TOPIC"
+
+   /usr/hdp/current/kafka-broker/bin/kafka-topics.sh --zookeeper zookeeper0-2.ambari0.us-east-1.ccp.dev.arity.com:2181,zookeeper0-0.ambari0.us-east-1.ccp.dev.arity.com:2181,zookeeper0-1.ambari0.us-east-1.ccp.dev.arity.com:2181 --create --partitions 30 --replication-factor 2 --topic "$TOPIC"
+
+done
